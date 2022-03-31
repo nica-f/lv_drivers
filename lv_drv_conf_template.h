@@ -1,6 +1,6 @@
 /**
  * @file lv_drv_conf.h
- * Configuration file for v8.1.0-dev
+ * Configuration file for v8.3.0-dev
  */
 
 /*
@@ -178,9 +178,18 @@
 #endif
 
 #if USE_WAYLAND
-#  define WAYLAND_HOR_RES      480
-#  define WAYLAND_VER_RES      320
-#  define WAYLAND_SURF_TITLE   "LVGL"
+/* Support for client-side decorations */
+#  ifndef LV_WAYLAND_CLIENT_SIDE_DECORATIONS
+#    define LV_WAYLAND_CLIENT_SIDE_DECORATIONS 1
+#  endif
+/* Support for (deprecated) wl-shell protocol */
+#  ifndef LV_WAYLAND_WL_SHELL
+#    define LV_WAYLAND_WL_SHELL 1
+#  endif
+/* Support for xdg-shell protocol */
+#  ifndef LV_WAYLAND_XDG_SHELL
+#    define LV_WAYLAND_XDG_SHELL 0
+#  endif
 #endif
 
 /*----------------
@@ -454,11 +463,11 @@
 /*-------------------------------------------------
  * Full keyboard support for evdev and libinput interface
  *------------------------------------------------*/
-#if USE_LIBINPUT || USE_BSD_LIBINPUT || USE_EVDEV || USE_BSD_EVDEV
 #  ifndef USE_XKB
 #    define USE_XKB           0
 #  endif
 
+#if USE_LIBINPUT || USE_BSD_LIBINPUT || USE_EVDEV || USE_BSD_EVDEV
 #  if USE_XKB
 #    define XKB_KEY_MAP       { .rules = NULL, \
                                 .model = "pc101", \
